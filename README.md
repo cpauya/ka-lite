@@ -18,4 +18,4 @@ It's my first time uploading a project.
 
 I hope it helps anyone out there that needs references!
 
-![Alt text]http://i.imgur.com/7MSR7VS.jpg "Sample Screenshot - Student View")
+![image](http://i.imgur.com/7MSR7VS.jpg)
