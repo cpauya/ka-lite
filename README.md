@@ -1,5 +1,6 @@
 # nducurriculum
-Capstone Project (2017)
+
+### Capstone Project (2017)
 
 This was a capstone project inteded for Notre Dame University - Cotabato City.
 
@@ -17,4 +18,4 @@ It's my first time uploading a project.
 
 I hope it helps anyone out there that needs references!
 
-[Alt text]http://i.imgur.com/7MSR7VS.jpg "Sample Screenshot - Student View")
+![Alt text]http://i.imgur.com/7MSR7VS.jpg "Sample Screenshot - Student View")
