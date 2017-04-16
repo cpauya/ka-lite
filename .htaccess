@@ -1,0 +1,19 @@
+RewriteEngine on
+RewriteBase /capstone
+
+
+
+RewriteCond %{REQUEST_URI} ^capstone.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+
+RewriteCond %{REQUEST_URI} ^application.*
+RewriteRule ^(.*)$ /index.php?/$1 [L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L]
+
+<IfModule !fcgid_module>
+	php_value date.timezone "Asia/Hong_Kong"
+</IfModule>
