@@ -94,6 +94,10 @@ assets:
 	cp .kalite_dist_tmp/database/data.sqlite kalite/database/templates/
 	bin/kalite manage retrievecontentpack empty en --foreground --template
 
+pex:
+	pex -o dist/kalite.pex -m kalite dist/ka_lite_static-*.whl
+
+
 release: dist man
 	ls -l dist
 	echo "Uploading dist/* to PyPi, using twine"
