@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-pip install -e .
 make dockerenvdist
 
 buildkite-agent artifact upload 'dist/*.whl'
