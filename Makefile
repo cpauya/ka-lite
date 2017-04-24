@@ -97,9 +97,18 @@ assets:
 pex:
 	pex -o dist/kalite.pex -m kalite dist/ka_lite_static-*.whl
 
+writeversion:
+	git describe --tags > kalite/VERSION
 
-dockerenvbuild:
-	docker image build -t learningequality/kalite:$$(python -c 'import kalite.version; print kalite.VERSION') -t learningequality/kalite:latest .
+dockerenvclean:
+	docker container prune -f
+	docker image prune -f
+
+dockerenvbuild: writeversion
+	docker image build -t learningequality/ka-lite:$$(cat kalite/VERSION) -t learningequality/ka-lite:latest .
+
+dockerenvdist: writeversion
+	docker run -v $$PWD/dist:/ka-litedist learningequality/ka-lite:$$(cat kalite/VERSION)
 
 
 release: dist man
