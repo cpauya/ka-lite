@@ -98,6 +98,10 @@ pex:
 	pex -o dist/kalite.pex -m kalite dist/ka_lite_static-*.whl
 
 
+dockerenvbuild:
+	docker image build -t learningequality/kalite:$$(python -c 'import kalite.version; print kalite.VERSION') -t learningequality/kalite:latest .
+
+
 release: dist man
 	ls -l dist
 	echo "Uploading dist/* to PyPi, using twine"
