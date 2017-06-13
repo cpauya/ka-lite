@@ -118,3 +118,16 @@ dist: clean docs assets
 
 install: clean
 	python setup.py install
+
+pex:
+	pex -o dist/kalite-$$(kalite --version).pex -m kalite dist/ka_lite_static-*.whl
+
+dockerenvclean:
+	docker container prune -f
+	docker image prune -f
+
+dockerenvbuild:
+	docker image build -t learningequality/kalite:$$(kalite --version) -t learningequality/kalite:latest .
+
+dockerenvdist:
+	docker run -v $$PWD/dist:/kalitedist learningequality/kalite:$$(kalite --version)
