@@ -120,7 +120,7 @@ install: clean
 	python setup.py install
 
 pex:
-	pex -o dist/kalite-$$(kalite --version).pex -m kalite dist/ka_lite_static-*.whl
+	pex -o dist/kalite-$$(cat kalite/VERSION).pex -m kalite dist/ka_lite_static-*.whl
 
 writeversion:
 	git describe --tags > kalite/VERSION
