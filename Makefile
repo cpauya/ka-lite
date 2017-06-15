@@ -70,6 +70,9 @@ coverage:
 	coverage run --source kalite bin/kalite test
 	coverage report -m
 
+writeversion:
+	kalite --version > kalite/VERSION
+
 docs:
 	# rm -f docs/ka-lite.rst
 	# rm -f docs/modules.rst
@@ -106,7 +109,7 @@ sdist: clean docs assets
 	python setup.py sdist --formats=$(format) --static
 	python setup.py sdist --formats=$(format)
 
-dist: clean docs assets
+dist: writeversion clean docs assets 
 	# Building assets currently creates pyc files in the source dirs,
 	# so we should delete those...
 	make clean-pyc
@@ -120,10 +123,7 @@ install: clean
 	python setup.py install
 
 pex:
-	pex -o dist/kalite-$$(cat kalite/VERSION).pex -m kalite dist/ka_lite_static-*.whl
-
-writeversion:
-	git describe --tags > kalite/VERSION
+	ls dist/*.whl | while read whlfile; do pex $$whlfile --disable-cache -o dist/kalite-`unzip -p $$whlfile kalite/VERSION`.pex -m kolibri --python-shebang=/usr/bin/python; done
 
 dockerenvclean:
 	docker container prune -f

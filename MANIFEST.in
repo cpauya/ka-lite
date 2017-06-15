@@ -5,6 +5,7 @@ include LICENSE
 include README.rst
 include setup.cfg
 include requirements.txt
+include kalite/VERSION
 
 recursive-include kalite *.html *.txt *.png *.js *.css *.gif *.less *.otf *.svg *.woff *.eot *.ttf *.zip *.json *.handlebars *.woff2 *.mo *ico
 recursive-include kalite/static-libraries *
