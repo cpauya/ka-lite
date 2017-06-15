@@ -71,7 +71,7 @@ coverage:
 	coverage report -m
 
 writeversion:
-	kalite --version > kalite/VERSION
+	git describe --tags  > kalite/VERSION
 
 docs:
 	# rm -f docs/ka-lite.rst
