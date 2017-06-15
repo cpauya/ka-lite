@@ -3,6 +3,7 @@
 set -euo pipefail
 
 pip install pex   
+pip install wheel
 make dockerenvdist
 make pex 
 buildkite-agent artifact upload 'dist/*.whl'
