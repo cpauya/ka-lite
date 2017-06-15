@@ -123,7 +123,7 @@ install: clean
 	python setup.py install
 
 pex:
-	ls dist/ka_lite_static-*.whl | while read whlfile; do pex $$whlfile --disable-cache -o dist/kalite-`unzip -p $$whlfile kalite/VERSION`.pex -m kalite --python-shebang=/usr/bin/python; done
+	ls dist/ka_lite_static-*.whl | while read whlfile; do pex $$whlfile -o dist/kalite-`unzip -p $$whlfile kalite/VERSION`.pex -m kalite --python-shebang=/usr/bin/python; done
 
 dockerenvclean:
 	docker container prune -f
