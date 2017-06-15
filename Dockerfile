@@ -20,5 +20,4 @@ RUN /kalite/kalite_env/bin/pip install -r /kalite/requirements_dev.txt && /kalit
 ENV PATH=/kalite/kalite_env/bin:$PATH
 ENV KALITE_PYTHON=/kalite/kalite_env/bin/python
 
-CMD cd /kalite && make dist && cp /kalite/dist/* /kalitedist/
-
+CMD cd /kalite && pip install -e . && make dist && cp /kalite/dist/* /kalitedist/
