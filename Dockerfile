@@ -12,7 +12,7 @@ COPY . /kalite
 VOLUME /kalitedist/
 
 # for mounting the whl files into other docker containers
-RUN pip install virtualenv && virtualenv /kalite/kalite_env
+RUN pip install virtualenv && virtualenv /kalite/kalite_env  --python=python2.7
 RUN /kalite/kalite_env/bin/pip install -r /kalite/requirements_dev.txt && /kalite/kalite_env/bin/pip install -r /kalite/requirements_sphinx.txt
 
 # Lets override the PATH to add the path of our virtualenv python binaries first so it's python executes instead of
