@@ -1,12 +1,12 @@
 FROM ubuntu:xenial
 
 # install latest python and nodejs
-RUN apt-get -y update --fix-missing
+RUN apt-get -y update 
 RUN apt-get install -y software-properties-common curl
 RUN add-apt-repository ppa:voronov84/andreyv
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get -y update --fix-missing
-RUN apt-get install -y python2.7 python-pip git nodejs  gettext python-sphinx
+RUN apt-get -y update
+RUN apt-get install -y python2.7 python-pip git nodejs  gettext python-sphinx unzip
 
 COPY . /kalite
 VOLUME /kalitedist/
@@ -20,4 +20,4 @@ RUN /kalite/kalite_env/bin/pip install -r /kalite/requirements_dev.txt && /kalit
 ENV PATH=/kalite/kalite_env/bin:$PATH
 ENV KALITE_PYTHON=/kalite/kalite_env/bin/python
 
-CMD cd /kalite && make dist && cp /kalite/dist/* /kalitedist/
+CMD cd /kalite && make dist && pip install pex && make pex && cp /kalite/dist/* /kalitedist/
