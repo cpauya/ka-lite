@@ -144,4 +144,4 @@ dockerenvdist: dockerwriteversion
 	docker run -v $$PWD/dist:/kalitedist learningequality/kalite:$$(cat kalite/VERSION)
 
 pex:
-	pex -m kalite ka_lite_static-*.whl -o dist/ka-lite-static$(git describe).pex
+	ls dist/*.whl | while read whlfile; do pex $$whlfile --disable-cache -o dist/ka-lite-static$$(git describe).pex -m kalite $$whlfile; done
