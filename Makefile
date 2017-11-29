@@ -142,3 +142,6 @@ dockerenvbuild: dockerwriteversion
 
 dockerenvdist: dockerwriteversion
 	docker run -v $$PWD/dist:/kalitedist learningequality/kalite:$$(cat kalite/VERSION)
+
+pex:
+	pex -m kalite ka_lite_static-*.whl -o dist/ka-lite-static$(git describe).pex
