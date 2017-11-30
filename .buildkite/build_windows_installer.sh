@@ -10,6 +10,9 @@ STEPS=5
 
 echo "Working Directory: $PARENT_PATH"
 ls -l $PARENT_PATH
+echo "Docker path?"
+ls -l "$PARENT_PATH/windows_installer_docker_build"
+
 # Download artifacts to dist/
 echo "$STEP of $STEPS"
 mkdir -p dist
