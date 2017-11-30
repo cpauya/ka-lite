@@ -9,18 +9,19 @@ STEP=1
 STEPS=5
 
 echo "Working Directory: $PARENT_PATH"
-
+ls -l $PARENT_PATH
 # Download artifacts to dist/
 echo "$STEP of $STEPS"
 mkdir -p dist
 buildkite-agent artifact download 'dist/*.whl' dist/
 make dockerwriteversion
+cat "$PARENT_PATH/kalite/VERSION"
 ((STEP++))
 echo "$STEP of $STEPS"
 # Clone KA-Lite windows installer and download content pack
 cd $KALITE_DOCKER_PATH
 git clone https://github.com/learningequality/ka-lite-installers.git && git checkout 0.17.x
-cd $KALITE_WINDOWS_PATH && wget http://pantry.learningequality.org/downloads/ka-lite/0.17/content/contentpacks/en.zip
+cd $KALITE_WINDOWS_PATH # && wget http://pantry.learningequality.org/downloads/ka-lite/0.17/content/contentpacks/en.zip
 ((STEP++))
 ls -l $PARENT_PATH/dist
 echo "Copying ... $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH"
@@ -33,7 +34,7 @@ if [ $? -ne 0 ]; then
     echo "... Abort! Error running $COPY_CMD"
     exit 1
 fi
-
+((STEP++))
 echo "$STEP of $STEPS"
 KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
 # Build KA-Lite windows installer docker image
