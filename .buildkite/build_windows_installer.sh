@@ -5,11 +5,15 @@ set -euo pipefail
 PARENT_PATH=$(pwd)
 KALITE_DOCKER_PATH="$PARENT_PATH/windows_installer_docker_build"
 KALITE_WINDOWS_PATH="$KALITE_DOCKER_PATH/ka-lite-installers/windows"
+STEP=1
+STEPS=5
 
+# Download artifacts to dist/
+echo "$(STEP) of $(STEPS)"
 mkdir -p dist
 buildkite-agent artifact download 'dist/*.whl' dist/
 make dockerwriteversion
-
+(($STEP++))
 # Clone KA-Lite windows installer and download content pack
 cd $KALITE_DOCKER_PATH
 git clone https://github.com/learningequality/ka-lite-installers.git && git checkout 0.17.x
@@ -17,13 +21,13 @@ cd $KALITE_WINDOWS_PATH && wget http://pantry.learningequality.org/downloads/ka-
 
 ls -l $PARENT_PATH/dist
 
-echo "Copying ... $PARENT_PATH/dist/*.whl to $KALITE_WINDOWS_PATH"
+echo "Copying ... $PARENT_PATH/dist/to $KALITE_WINDOWS_PATH"
 # Copy kalite whl files to kalite windows installer path
+COPY_CMD="cp -Rv $PARENT_PATH/dist/ $KALITE_WINDOWS_PATH"
 cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH
 
 # Build KA-Lite windows installer docker image
 cd $KALITE_DOCKER_PATH
-KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
 DOCKER_BUILD_CMD="docker image build -t $KALITE_BUILD_VERSION-build ."
 $DOCKER_BUILD_CMD
 
