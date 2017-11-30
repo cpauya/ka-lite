@@ -8,6 +8,8 @@ KALITE_WINDOWS_PATH="$KALITE_DOCKER_PATH/ka-lite-installers/windows"
 STEP=1
 STEPS=5
 
+echo "Working Directory: $PARENT_PATH"
+
 # Download artifacts to dist/
 echo "$(STEP) of $(STEPS)"
 mkdir -p dist
