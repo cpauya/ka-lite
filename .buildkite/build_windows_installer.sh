@@ -24,8 +24,14 @@ ls -l $PARENT_PATH/dist
 echo "Copying ... $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH"
 # Copy kalite whl files to kalite windows installer path
 COPY_CMD="cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH"
-cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH
+$COPY_CMD
 
+if [ $? -ne 0 ]; then
+    echo "... Abort! Error running $COPY_CMD"
+    exit 1
+fi
+
+KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
 # Build KA-Lite windows installer docker image
 cd $KALITE_DOCKER_PATH
 DOCKER_BUILD_CMD="docker image build -t $KALITE_BUILD_VERSION-build ."
