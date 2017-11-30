@@ -34,6 +34,8 @@ fi
 KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
 # Build KA-Lite windows installer docker image
 cd $KALITE_DOCKER_PATH
+echo "Docker Path: $KALITE_DOCKER_PATH"
+ls -l $KALITE_DOCKER_PATH
 DOCKER_BUILD_CMD="docker image build -t $KALITE_BUILD_VERSION-build ."
 $DOCKER_BUILD_CMD
 
