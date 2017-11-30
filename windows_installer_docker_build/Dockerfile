@@ -5,7 +5,7 @@ RUN apt-get -y update
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y --no-install-recommends git wget ca-certificates sudo software-properties-common
 
-RUN add-apt-repository ppa:ubuntu-wine/ppa && apt-get update  && apt-get install -y wine1.8
+RUN add-apt-repository -y ppa:ubuntu-wine/ppa && apt-get -y update && apt-get install --no-install-recommends --assume-yes wine
 
 COPY . /kalite
 

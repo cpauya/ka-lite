@@ -19,7 +19,7 @@ cd $KALITE_WINDOWS_PATH && wget http://pantry.learningequality.org/downloads/ka-
 cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH
 
 # Build KA-Lite windows installer docker image
-cd KALITE_DOCKER_PATH
+cd $KALITE_DOCKER_PATH
 KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
 DOCKER_BUILD_CMD="docker build -t $KALITE_BUILD_VERSION-build ."
 $DOCKER_BUILD_CMD
