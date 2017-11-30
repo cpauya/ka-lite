@@ -13,7 +13,7 @@ ls -l $PARENT_PATH
 echo "Docker path?"
 ls -l "$PARENT_PATH/windows_installer_docker_build"
 
-if [ -d "$PARENT_PATH/windows_installer_docker_build/Dockerfile"]; then
+if [ -d "$PARENT_PATH/windows_installer_docker_build/Dockerfile" ]; then
     echo "Dockerifle does not exist!"
     exit 1
 fi
@@ -32,8 +32,9 @@ cd $KALITE_DOCKER_PATH
 git clone https://github.com/learningequality/ka-lite-installers.git && git checkout 0.17.x
 cd $KALITE_WINDOWS_PATH # && wget http://pantry.learningequality.org/downloads/ka-lite/0.17/content/contentpacks/en.zip
 ((STEP++))
-ls -l $PARENT_PATH/dist
-echo "Copying ... $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH"
+
+echo "Was the dockerfile deleted?"
+ls -l "$KALITE_DOCKER_PATH"
 echo "$STEP of $STEPS"
 # Copy kalite whl files to kalite windows installer path
 COPY_CMD="cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH"
@@ -53,24 +54,24 @@ ls -l $KALITE_DOCKER_PATH
 echo "$PWD"
 echo "Files inside this directory"
 ls -l .
-DOCKER_BUILD_CMD="docker image build -t $KALITE_BUILD_VERSION-build ."
-$DOCKER_BUILD_CMD
+# DOCKER_BUILD_CMD="docker image build -t $KALITE_BUILD_VERSION-build ."
+# $DOCKER_BUILD_CMD
 
-if [ $? -ne 0 ]; then
-    echo "... Abort! Error running $DOCKER_BUILD_CMD."
-    exit 1
-fi
+# if [ $? -ne 0 ]; then
+#     echo "... Abort! Error running $DOCKER_BUILD_CMD."
+#     exit 1
+# fi
 
-INSTALLER_PATH="$KALITE_DOCKER_PATH/installer"
-mkdir -p $INSTALLER_PATH
+# INSTALLER_PATH="$KALITE_DOCKER_PATH/installer"
+# mkdir -p $INSTALLER_PATH
 
-# Run KA-Lite windows installer docker image.
-DOCKER_RUN_CMD="docker run -v $INSTALLER_PATH:/installer/ $KALITE_BUILD_VERSION-build"
-$DOCKER_RUN_CMD
+# # Run KA-Lite windows installer docker image.
+# DOCKER_RUN_CMD="docker run -v $INSTALLER_PATH:/installer/ $KALITE_BUILD_VERSION-build"
+# $DOCKER_RUN_CMD
 
-if [ $? -ne 0 ]; then
-    echo "... Abort! Error running $DOCKER_RUN_CMD."
-    exit 1
-fi
+# if [ $? -ne 0 ]; then
+#     echo "... Abort! Error running $DOCKER_RUN_CMD."
+#     exit 1
+# fi
 
-buildkite-agent artifact upload '/installer/*.exe'
+# buildkite-agent artifact upload '/installer/*.exe'
