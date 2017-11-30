@@ -20,7 +20,7 @@ echo "$STEP of $STEPS"
 # Clone KA-Lite windows installer and download content pack
 cd $KALITE_DOCKER_PATH
 git clone https://github.com/learningequality/ka-lite-installers.git && cd ka-lite-installers && git checkout 0.17.x
-cd $KALITE_WINDOWS_PATH # && wget http://pantry.learningequality.org/downloads/ka-lite/0.17/content/contentpacks/en.zip
+cd $KALITE_WINDOWS_PATH && wget http://pantry.learningequality.org/downloads/ka-lite/0.17/content/contentpacks/en.zip
 ((STEP++))
 
 echo "$STEP of $STEPS"
