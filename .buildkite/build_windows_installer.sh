@@ -13,11 +13,6 @@ ls -l $PARENT_PATH
 echo "Docker path?"
 ls -l "$PARENT_PATH/windows_installer_docker_build"
 
-if [ -d "$PARENT_PATH/windows_installer_docker_build/Dockerfile" ]; then
-    echo "Dockerifle does not exist!"
-    exit 1
-fi
-
 
 # Download artifacts to dist/
 echo "$STEP of $STEPS"
@@ -51,6 +46,11 @@ KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
 cd $KALITE_DOCKER_PATH
 echo "Docker Path: $KALITE_DOCKER_PATH"
 ls -l $KALITE_DOCKER_PATH
+if [ ! -f "$PARENT_PATH/windows_installer_docker_build/Dockerfile" ]; then
+    echo "Dockerifle does not exist!"
+    exit 1
+fi
+
 echo "$PWD"
 echo "Files inside this directory"
 ls -l .
