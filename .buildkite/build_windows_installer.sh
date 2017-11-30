@@ -65,5 +65,5 @@ if [ $? -ne 0 ]; then
     echo "... Abort! Error running $DOCKER_RUN_CMD."
     exit 1
 fi
-
-buildkite-agent artifact upload '/installer/*.exe'
+cd $KALITE_DOCKER_PATH
+buildkite-agent artifact upload './installer/*.exe'

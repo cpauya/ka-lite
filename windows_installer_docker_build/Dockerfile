@@ -16,5 +16,4 @@ CMD cd /kalite/ka-lite-installers/windows \
     && WHL_FILE=$(basename $(find . -name ka_lite-*.whl)) \
     && export KALITE_BUILD_VERSION=$(echo $WHL_FILE | cut -d'-' -f 2) \
     && wine inno-compiler/ISCC.exe installer-source/KaliteSetupScript.iss \
-    && cp /kalite/ka-lite-installers/windows/KALiteSetup-$KALITE_BUILD_VERSION.exe /installer/ \
-    && ls -l && ls -l /installer
+    && cp /kalite/ka-lite-installers/windows/KALiteSetup-$KALITE_BUILD_VERSION.exe /installer/
