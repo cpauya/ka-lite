@@ -6,4 +6,8 @@ steps:
 
   - label: Build python packages
     command: mkdir -p dist && .buildkite/build_whl.sh && docker container prune -f
-    
+  
+  -wait
+
+  - label: Build windows installer
+    command: .buildkite/build_windows_installer.sh

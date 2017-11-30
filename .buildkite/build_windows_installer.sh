@@ -21,7 +21,7 @@ cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH
 # Build KA-Lite windows installer docker image
 cd $KALITE_DOCKER_PATH
 KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
-DOCKER_BUILD_CMD="docker build -t $KALITE_BUILD_VERSION-build ."
+DOCKER_BUILD_CMD="docker image build -t $KALITE_BUILD_VERSION-build ."
 $DOCKER_BUILD_CMD
 
 if [ $? -ne 0 ]; then
@@ -41,4 +41,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# buildkite-agent artifact upload '/installer/*.exe'
+buildkite-agent artifact upload '/installer/*.exe'

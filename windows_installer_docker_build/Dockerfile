@@ -11,8 +11,9 @@ COPY . /kalite
 
 RUN mkdir /installer/
 
-ENV KALITE_BUILD_VERSION="$(cat /kalite/kalite/VERSION)"
-
 # Build KA-Lite windows installer.
-RUN cd /kalite/ka-lite-installers/windows
-RUN echo $KALITE_BUILD_VERSION
+CMD cd /kalite/ka-lite-installers/windows \
+    && WHL_FILE=$(basename $(find . -name ka_lite-*.whl)) \
+    && export KALITE_BUILD_VERSION=$(echo $WHL_FILE | cut -d'-' -f 2) \
+    && wine inno-compiler/ISCC.exe installer-source/KaliteSetupScript.iss \
+    && cp /kalite/ka-lite-installers/windows/KALiteSetup-$KALITE_BUILD_VERSION.exe /installer/
