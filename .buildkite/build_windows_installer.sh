@@ -7,7 +7,7 @@ KALITE_DOCKER_PATH="$PARENT_PATH/windows_installer_docker_build"
 KALITE_WINDOWS_PATH="$KALITE_DOCKER_PATH/ka-lite-installers/windows"
 
 mkdir -p dist
-# buildkite-agent artifact download 'dist/*.whl' dist/
+buildkite-agent artifact download 'dist/*.whl' dist/
 make dockerwriteversion
 
 # Clone KA-Lite windows installer and download content pack
