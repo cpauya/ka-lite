@@ -15,6 +15,9 @@ cd $KALITE_DOCKER_PATH
 git clone https://github.com/learningequality/ka-lite-installers.git && git checkout 0.17.x
 cd $KALITE_WINDOWS_PATH && wget http://pantry.learningequality.org/downloads/ka-lite/0.17/content/contentpacks/en.zip
 
+ls -l $PARENT_PATH/dist
+
+echo "Copying ... $PARENT_PATH/dist/*.whl to $KALITE_WINDOWS_PATH"
 # Copy kalite whl files to kalite windows installer path
 cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH
 
