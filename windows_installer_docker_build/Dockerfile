@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends git wget ca-cer
 RUN add-apt-repository -y ppa:ubuntu-wine/ppa && apt-get -y update && apt-get install --no-install-recommends --assume-yes wine
 
 # Install debian build dependencies
-RUN apt-get install -y devscripts
-RUN apt-get update &&  apt-get install -y equivs gdebi
+# RUN apt-get install -y devscripts
+# RUN apt-get update &&  apt-get install -y equivs gdebi
 
 COPY . /kalite
 

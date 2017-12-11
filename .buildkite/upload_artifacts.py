@@ -45,6 +45,18 @@ headers = {'Authorization': 'token %s' % ACCESS_TOKEN}
 INSTALLER_CAT = "Installers"
 PYTHON_PKG_CAT = "Python Packages"
 
+# Print Variables
+variabs = """
+REPO_OWNER = {}
+REPO_NAME = {}
+ISSUE_ID = {}
+BUILD_ID ={}
+TAG = {}
+COMMIT = {}
+DIST_DIR = {}
+INSTALLER_DIR = {}
+""".format(REPO_OWNER, REPO_NAME, ISSUE_ID, BUILD_ID, TAG, COMMIT, DIST_DIR, INSTALLER_DIR)
+
 # Manifest of files keyed by extension
 
 file_manifest = {
