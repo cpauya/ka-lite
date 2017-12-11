@@ -22,6 +22,10 @@ git clone https://github.com/learningequality/ka-lite-installers.git && cd ka-li
 COPY_CMD="cp $PARENT_PATH/dist/*.whl $KALITE_WINDOWS_PATH"
 $COPY_CMD
 
+# Copy content packs to windows installer path
+COPY_CMD="cp $PARENT_PATH/dist/en.zip $KALITE_WINDOWS_PATH"
+$COPY_CMD
+
 # Build KA-Lite windows installer docker image
 KALITE_BUILD_VERSION=$(cat $PARENT_PATH/kalite/VERSION)
 cd $KALITE_DOCKER_PATH
