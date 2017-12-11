@@ -12,6 +12,7 @@ virtualenv -p python3 env
 # Install requests and github3.py
 $PIP install requests==2.10.0
 $PIP install github3.py==0.9.6
+$PIP install gcloud
 
 echo "Executing upload script..."
 mkdir -p dist
