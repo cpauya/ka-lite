@@ -56,6 +56,7 @@ COMMIT = {}
 DIST_DIR = {}
 INSTALLER_DIR = {}
 """.format(REPO_OWNER, REPO_NAME, ISSUE_ID, BUILD_ID, TAG, COMMIT, DIST_DIR, INSTALLER_DIR)
+print(variabs)
 
 # Manifest of files keyed by extension
 
