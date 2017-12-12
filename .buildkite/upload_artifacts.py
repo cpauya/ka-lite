@@ -74,12 +74,12 @@ file_manifest = {
     },
 }
 
-file_order = {
+file_order = [
+    'exe',
     'pex',
     'whl',
     'gz',
-    'exe',
-}
+]
 
 gh = login(token=ACCESS_TOKEN)
 repository = gh.repository(REPO_OWNER, REPO_NAME)
@@ -95,9 +95,9 @@ def create_status_report_html(artifacts):
         if artifact['category'] != current_heading:
             current_heading = artifact['category']
             html += "<h2>{heading}</h2>\n".format(heading=current_heading)
-    
-        html += "<p>{description}: <a href='{media_url}'>{name}</a></p>\n".format(**artifact)
-        
+        html += "<p>{description}: <a href='{media_url}'>{name}</a></p>\n".format(
+            **artifact
+        )
     html += "</body>\n</html>"
     return html
 
@@ -162,13 +162,15 @@ def upload_artifacts():
         logging.info("Uploading file {filename}".format(filename=file_data.get("name")))
 
         if is_release:
+            logging.info("It's a release!")
             blob = bucket.blob("kalite//{release_dir}//{build_id}//{filename}".format(
                 release_dir=RELEASE_DIR,
                 build_id=BUILD_ID,
                 filename=file_data.get("name")
             ))
         else:
-            blob = bucket.blob("kalite/buildkite/build-{release_dir}/{build_id}/{filename}".format(
+            logging.info("Just building stuffs...")
+            blob = bucket.blob("kalite//buildkite//build-{release_dir}/{build_id}/{filename}".format(
                 release_dir=RELEASE_DIR, 
                 build_id=BUILD_ID, 
                 filename=file_data.get("name")
