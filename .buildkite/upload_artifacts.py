@@ -162,7 +162,7 @@ def upload_artifacts():
         logging.info("Uploading file {filename}".format(filename=file_data.get("name")))
 
         if is_release:
-            blob = bucket.blob("kalite/{release_dir}/{build_id}/{filename}".format(
+            blob = bucket.blob("kalite//{release_dir}//{build_id}//{filename}".format(
                 release_dir=RELEASE_DIR,
                 build_id=BUILD_ID,
                 filename=file_data.get("name")
