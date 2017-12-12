@@ -25,7 +25,7 @@ from github3 import login
 logging.getLogger().setLevel(logging.INFO)
 
 ACCESS_TOKEN = os.getenv("GITHUB_ACCESS_TOKEN")
-REPO_OWNER = "mrpau"
+REPO_OWNER = "learningequality"
 REPO_NAME = "ka-lite"
 ISSUE_ID = os.getenv("BUILDKITE_PULL_REQUEST")
 BUILD_ID = os.getenv("BUILDKITE_BUILD_NUMBER")
@@ -106,10 +106,9 @@ def create_github_status(report_url):
     Create a github status with a link to the report URL,
     only do this once buildkite has been successful, so only report success here.
     """
-    commit = "2628d5e71cd8ee5f44630279dddf65df01e9ee17"
+    comm = "2628d5e71cd8ee5f44630279dddf65df01e9ee17"
     status = repository.create_status(
-        # COMMIT,
-        commit,
+        comm,
         "success",
         target_url=report_url,
         description="KA-Lite Buildkite assets",
@@ -117,7 +116,7 @@ def create_github_status(report_url):
     )
 
     if status:
-        logging.info("Successfully created GitHub status for commit {commit}.".format(commit=COMMIT))
+        logging.info("Successfully created GitHub status for commit {commit}.".format(commit=comm))
     else:
         logging.info("Error encountered. Now exiting!")
         sys.exit(1)
@@ -186,6 +185,8 @@ def upload_artifacts():
     blob.make_public()
 
     create_github_status(blob.public_url)
+    print(blob.public_url)
+    logging.info(blob.public_url)
 
     if TAG:
         get_release_asset_url = requests.get("https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}".format(
