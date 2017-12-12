@@ -45,19 +45,6 @@ headers = {'Authorization': 'token %s' % ACCESS_TOKEN}
 INSTALLER_CAT = "Installers"
 PYTHON_PKG_CAT = "Python Packages"
 
-# Print Variables
-variabs = """
-REPO_OWNER = {}
-REPO_NAME = {}
-ISSUE_ID = {}
-BUILD_ID ={}
-TAG = {}
-COMMIT = {}
-DIST_DIR = {}
-INSTALLER_DIR = {}
-""".format(REPO_OWNER, REPO_NAME, ISSUE_ID, BUILD_ID, TAG, COMMIT, DIST_DIR, INSTALLER_DIR)
-print(variabs)
-
 # Manifest of files keyed by extension
 
 file_manifest = {
@@ -126,9 +113,10 @@ def create_github_status(report_url):
     Create a github status with a link to the report URL,
     only do this once buildkite has been successful, so only report success here.
     """
-
+    commit = "2628d5e71cd8ee5f44630279dddf65df01e9ee17"
     status = repository.create_status(
-        COMMIT,
+        # COMMIT,
+        commit,
         "success",
         target_url=report_url,
         description="KA-Lite Buildkite assets",
@@ -173,46 +161,38 @@ def upload_artifacts():
     Create a status on the pull requester with the artifact media link.
     """
 
-    # client = storage.Client()
-    # bucket = client.bucket("le-downloads")
+    client = storage.Client()
+    bucket = client.bucket("le-downloads")
     artifacts = collect_local_artifacts()
     is_release = os.getenv("IS_KALITE_RELEASE")
 
     for file_data in artifacts.values():
         logging.info("Uploading file {filename}".format(filename=file_data.get("name")))
 
-        # if is_release:
-        #     blob = bucket.blob("kalite/{release_dir}/{build_id}/{filename}".format(
-        #         release_dir=RELEASE_DIR,
-        #         build_id=BUILD_ID,
-        #         filename=file_data.get("name")
-        #     ))
-        # else:
-        #     blob = bucket.blob("kalite/buildkite/build-{release_dir}/{build_id}/{filename}".format(
-        #         release_dir=RELEASE_DIR, 
-        #         build_id=BUILD_ID, 
-        #         filename=file_data.get("name")
-        #     ))
+        if is_release:
+            blob = bucket.blob("kalite/{release_dir}/{build_id}/{filename}".format(
+                release_dir=RELEASE_DIR,
+                build_id=BUILD_ID,
+                filename=file_data.get("name")
+            ))
+        else:
+            blob = bucket.blob("kalite/buildkite/build-{release_dir}/{build_id}/{filename}".format(
+                release_dir=RELEASE_DIR, 
+                build_id=BUILD_ID, 
+                filename=file_data.get("name")
+            ))
         
-        print("Making it public")
-        # blob.upload_from_filename(filename=file_data.get("file_location"))
-        # blob.make_public()
-        file_data.update({'media_url': 'https://google.com/{filename}'.format(filename=file_data.get('file_location'))})
-        # file_data.update({'media_url': blob.media_link})
+        blob.upload_from_filename(filename=file_data.get("file_location"))
+        blob.make_public()
+        file_data.update({'media_url': blob.media_link})
 
     html = create_status_report_html(artifacts)
 
-    print("Instantiating blob...")
-    print("Uploading from string...")
-    print(html)
-    print("Making it public...")
-    # blob = bucket.blob("kalite/{release_dir}/{build_id}".format(release_dir=RELEASE_DIR, build_id=BUILD_ID))
-    # blob.upload_from_string(html, content_type='text/html')
-    # blob.make_public()
+    blob = bucket.blob("kalite/{release_dir}/{build_id}".format(release_dir=RELEASE_DIR, build_id=BUILD_ID))
+    blob.upload_from_string(html, content_type='text/html')
+    blob.make_public()
 
-    # create_github_status(blob.public_url)
-    print("Creating GitHub Status...")
-    create_github_status("https://google.com/")
+    create_github_status(blob.public_url)
 
     if TAG:
         get_release_asset_url = requests.get("https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}".format(
