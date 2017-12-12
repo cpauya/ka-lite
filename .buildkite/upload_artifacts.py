@@ -66,12 +66,6 @@ file_manifest = {
         'category': PYTHON_PKG_CAT,
         'content_type': 'application/zip',
     },
-    'zip': {
-        'extension': 'zip',
-        'description': 'Zip file',
-        'category': PYTHON_PKG_CAT,
-        'content_type': 'application/zip',
-    },
     'gz': {
         'extension': 'gz',
         'description': 'Tar file',
@@ -84,7 +78,6 @@ file_order = {
     'exe',
     'pex',
     'whl',
-    'zip',
     'gz',
 }
 
