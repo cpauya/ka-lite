@@ -163,14 +163,14 @@ def upload_artifacts():
 
         if is_release:
             logging.info("It's a release!")
-            blob = bucket.blob("kalite//{release_dir}//{build_id}//{filename}".format(
+            blob = bucket.blob("kalite-{release_dir}-{build_id}-{filename}".format(
                 release_dir=RELEASE_DIR,
                 build_id=BUILD_ID,
                 filename=file_data.get("name")
             ))
         else:
             logging.info("Just building stuffs...")
-            blob = bucket.blob("kalite//buildkite//build-{release_dir}/{build_id}/{filename}".format(
+            blob = bucket.blob("kalite-buildkite-build_{release_dir}-{build_id}-{filename}".format(
                 release_dir=RELEASE_DIR, 
                 build_id=BUILD_ID, 
                 filename=file_data.get("name")
