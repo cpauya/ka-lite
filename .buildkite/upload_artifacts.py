@@ -75,10 +75,10 @@ file_manifest = {
 }
 
 file_order = {
-    'exe',
     'pex',
     'whl',
     'gz',
+    'exe',
 }
 
 gh = login(token=ACCESS_TOKEN)
