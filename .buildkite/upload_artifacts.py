@@ -88,7 +88,7 @@ def create_status_report_html(artifacts):
     """
     Create html page to list build artifacts for linking from github status.
     """
-    html = "<html>\n<title>KA-Lite Buildkite Assets</title>\n<body>\n<h1>Build Artifacts</h1>\n"
+    html = "<html>\n<title>KA-Lite Buildkite Assets &ndash; Build #{build_id}</title>\n<body>\n<h1>Build Artifacts</h1>\n".format(build_id=BUILD_ID)
     current_heading = None
     for ext in file_order:
         artifact = artifacts[ext]
