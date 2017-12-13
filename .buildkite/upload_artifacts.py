@@ -88,7 +88,7 @@ def create_status_report_html(artifacts):
     """
     Create html page to list build artifacts for linking from github status.
     """
-    html = "<html>\n<body>\n<h1>Build Artifacts</h1>\n"
+    html = "<html>\n<title>KA-Lite Buildkite Assets</title>\n<body>\n<h1>Build Artifacts</h1>\n"
     current_heading = None
     for ext in file_order:
         artifact = artifacts[ext]
@@ -169,7 +169,7 @@ def upload_artifacts():
                 filename=file_data.get("name")
             ))
         else:
-            logging.info("Just building stuffs...")
+            logging.info("Just uploading build stuffs...")
             blob = bucket.blob("kalite-buildkite-build_{release_dir}-{build_id}-{filename}".format(
                 release_dir=RELEASE_DIR, 
                 build_id=BUILD_ID, 
