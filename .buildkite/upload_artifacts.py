@@ -187,7 +187,7 @@ def upload_artifacts():
     blob.make_public()
 
     create_github_status(blob.public_url)
-    logging.info("Status Report link: {}".format(blob.public_url)
+    logging.info("Status Report link: {}".format(blob.public_url))
 
     if TAG:
         get_release_asset_url = requests.get("https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}".format(
