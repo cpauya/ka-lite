@@ -162,7 +162,7 @@ def upload_artifacts():
         logging.info("Uploading file {filename}".format(filename=file_data.get("name")))
 
         if is_release:
-            logging.info("It's a release!")
+            logging.info("It's a release! Uploading...")
             blob = bucket.blob("kalite-{release_dir}-{build_id}-{filename}".format(
                 release_dir=RELEASE_DIR,
                 build_id=BUILD_ID,
@@ -187,8 +187,7 @@ def upload_artifacts():
     blob.make_public()
 
     create_github_status(blob.public_url)
-    print(blob.public_url)
-    logging.info(blob.public_url)
+    logging.info("Status Report link: {}".format(blob.public_url)
 
     if TAG:
         get_release_asset_url = requests.get("https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}".format(
