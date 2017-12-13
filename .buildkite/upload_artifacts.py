@@ -88,16 +88,23 @@ def create_status_report_html(artifacts):
     """
     Create html page to list build artifacts for linking from github status.
     """
-    html = "<html>\n<title>KA-Lite Buildkite Assets &ndash; Build #{build_id}</title>\n<body>\n<h1>Build Artifacts</h1>\n".format(build_id=BUILD_ID)
+    html = "<html>\n<title>KA-Lite Buildkite Assets &ndash; Build #{build_id}</title>\n".format(build_id=BUILD_ID)
+    html += "<body>\n<h1>Build Artifacts</h1>\n"
     current_heading = None
+
     for ext in file_order:
-        artifact = artifacts[ext]
-        if artifact['category'] != current_heading:
-            current_heading = artifact['category']
-            html += "<h2>{heading}</h2>\n".format(heading=current_heading)
-        html += "<p>{description}: <a href='{media_url}'>{name}</a></p>\n".format(
-            **artifact
-        )
+        artifacts_list = []
+
+        for artifact_dict in artifacts:
+            if artifact_dict['extension'] == ext:
+                artifacts_list.append(artifact_dict)
+        
+        for artifact in artifacts_list: 
+            if artifact['category'] != current_heading:
+                current_heading = artifact['category']
+                html += "<h2>{heading}</h2>\n".format(heading=current_heading)
+            html += "<p>{description}: <a href='{media_url}'>{name}</a></p>\n".format(
+            **artifact)
     html += "</body>\n</html>"
     return html
 
@@ -123,10 +130,10 @@ def create_github_status(report_url):
 
 def collect_local_artifacts():
     """
-    Create a dict of the artifact name and the location
+    Create a list of artifacts
     """
     
-    artifacts_dict = {}
+    collected_artifacts = []
 
     def create_artifact_data(artifact_dir):
         for artifact in os.listdir(artifact_dir):
@@ -140,12 +147,12 @@ def collect_local_artifacts():
                 }
                 data.update(file_manifest[file_extension])
                 logging.info("Collect file data: {data}".format(data=data))
-                artifacts_dict[file_extension] = data
+                collected_artifacts.append(data)
 
     create_artifact_data(DIST_DIR)
     create_artifact_data(INSTALLER_DIR)
 
-    return artifacts_dict
+    return collected_artifacts
 
 def upload_artifacts():
     """
@@ -158,36 +165,35 @@ def upload_artifacts():
     artifacts = collect_local_artifacts()
     is_release = os.getenv("IS_KALITE_RELEASE")
 
-    for file_data in artifacts.values():
-        logging.info("Uploading file {filename}".format(filename=file_data.get("name")))
+    for artifact in artifacts:
+        logging.info("Uploading file {filename}".format(filename=artifact.get("name")))
 
         if is_release:
             logging.info("It's a release! Uploading...")
             blob = bucket.blob("kalite-{release_dir}-{build_id}-{filename}".format(
                 release_dir=RELEASE_DIR,
                 build_id=BUILD_ID,
-                filename=file_data.get("name")
+                filename=artifact.get("name")
             ))
         else:
             logging.info("Just uploading build stuffs...")
             blob = bucket.blob("kalite-buildkite-build_{release_dir}-{build_id}-{filename}".format(
                 release_dir=RELEASE_DIR, 
                 build_id=BUILD_ID, 
-                filename=file_data.get("name")
+                filename=artifact.get("name")
             ))
         
-        blob.upload_from_filename(filename=file_data.get("file_location"))
+        blob.upload_from_filename(filename=artifact.get("file_location"))
         blob.make_public()
-        file_data.update({'media_url': blob.media_link})
+        artifact.update({'media_url': blob.media_link})
 
     html = create_status_report_html(artifacts)
-
     blob = bucket.blob("kalite-{release_dir}-{build_id}".format(release_dir=RELEASE_DIR, build_id=BUILD_ID))
     blob.upload_from_string(html, content_type='text/html')
     blob.make_public()
 
-    create_github_status(blob.public_url)
     logging.info("Status Report link: {}".format(blob.public_url))
+    create_github_status(blob.public_url)
 
     if TAG:
         get_release_asset_url = requests.get("https://api.github.com/repos/{owner}/{repo}/releases/tags/{tag}".format(
@@ -196,23 +202,26 @@ def upload_artifacts():
             tag=TAG
         ))
 
-        if get_release_asset_url.status_code == 200:
-            release_id = get_release_asset_url.json()['id']
-            release_name = get_release_asset_url.json()['name']
-            release = repository.release(id=release_id)
-            logging.info("Uploading build assets to GitHub Release: {release_name}".format(release_name=release_name))
+        # TODO: Fix to be compatible to a list type instead of a dict
+        # if get_release_asset_url.status_code == 200:
+        #     release_id = get_release_asset_url.json()['id']
+        #     release_name = get_release_asset_url.json()['name']
+        #     release = repository.release(id=release_id)
+        #     logging.info("Uploading build assets to GitHub Release: {release_name}".format(release_name=release_name))
+        #     for file_extension in file_order:
+        #         artifact = artifacts[file_extension]
+        #         logging.info("Uploading release asset: {artifact_name}".format(artifact.get('name')))
+        #         asset = release.upload_asset(
+        #             content_type=   ['content_type'],
+        #             name=artifact['name'],
+        #             asset=open(artifact['file_location'], 'rb')
+        #         )
 
-            asset = release.upload_asset(
-                content_type=artifact['content_type'],
-                name=artifact['name'],
-                asset=open(artifact['file_location'], 'rb')
-            )
-
-            if asset:
-                asset.edit(artifact['name'], label=artifact['description'])
-                logging.info("Successfully uploaded release asset: {artifact}".format(artifact=artifact.get('name')))
-            else:
-                logging.info("Error uploading release asset: {artifact}".format(artifact=artifact.get('name')))
+        #     if asset:
+        #         asset.edit(artifact['name'], label=artifact['description'])
+        #         logging.info("Successfully uploaded release asset: {artifact}".format(artifact=artifact.get('name')))
+        #     else:
+        #         logging.info("Error uploading release asset: {artifact}".format(artifact=artifact.get('name')))
 
 
 def main():
