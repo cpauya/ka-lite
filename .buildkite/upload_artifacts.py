@@ -182,7 +182,7 @@ def upload_artifacts():
 
     html = create_status_report_html(artifacts)
 
-    blob = bucket.blob("kalite/{release_dir}/{build_id}".format(release_dir=RELEASE_DIR, build_id=BUILD_ID))
+    blob = bucket.blob("kalite-{release_dir}-{build_id}".format(release_dir=RELEASE_DIR, build_id=BUILD_ID))
     blob.upload_from_string(html, content_type='text/html')
     blob.make_public()
 
