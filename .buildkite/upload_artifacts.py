@@ -202,27 +202,31 @@ def upload_artifacts():
             tag=TAG
         ))
 
-        # TODO: Fix to be compatible to a list type instead of a dict
-        # if get_release_asset_url.status_code == 200:
-        #     release_id = get_release_asset_url.json()['id']
-        #     release_name = get_release_asset_url.json()['name']
-        #     release = repository.release(id=release_id)
-        #     logging.info("Uploading build assets to GitHub Release: {release_name}".format(release_name=release_name))
-        #     for file_extension in file_order:
-        #         artifact = artifacts[file_extension]
-        #         logging.info("Uploading release asset: {artifact_name}".format(artifact.get('name')))
-        #         asset = release.upload_asset(
-        #             content_type=   ['content_type'],
-        #             name=artifact['name'],
-        #             asset=open(artifact['file_location'], 'rb')
-        #         )
+        if get_release_asset_url.status_code == 200:
+            release_id = get_release_asset_url.json()['id']
+            release_name = get_release_asset_url.json()['name']
+            release = repository.release(id=release_id)
+            logging.info("Uploading build assets to GitHub Release: {release_name}".format(release_name=release_name))
+            
+            for ext in file_order:
+                artifact_list = []
+                for artifact_dict in artifacts:
+                    if artifact_dict['extension'] == ext:
+                        artifact_list.append(artifact_dict)
+                
+                for artifact in artifact_list:
+                    logging.info("Uploading release asset: {artifact_name}".format(artifact.get('name')))
+                    asset = release.upload_asset(
+                        content_type=['content_type'],
+                        name=artifact['name'],
+                        asset=open(artifact['file_location'], 'rb')
+                    )
 
-        #     if asset:
-        #         asset.edit(artifact['name'], label=artifact['description'])
-        #         logging.info("Successfully uploaded release asset: {artifact}".format(artifact=artifact.get('name')))
-        #     else:
-        #         logging.info("Error uploading release asset: {artifact}".format(artifact=artifact.get('name')))
-
+                    if asset:
+                        asset.edit(artifact['name'], label=artifact['description'])
+                        logging.info("Successfully uploaded release asset: {artifact}".format(artifact=artifact.get('name')))
+                    else:
+                        logging.info("Error uploading release asset: {artifact}".format(artifact=artifact.get('name')))
 
 def main():
     upload_artifacts()
