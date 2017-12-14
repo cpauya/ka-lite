@@ -103,7 +103,7 @@ def create_status_report_html(artifacts):
             if artifact['category'] != current_heading:
                 current_heading = artifact['category']
                 html += "<h2>{heading}</h2>\n".format(heading=current_heading)
-            html += "<p>{description}: <a href='{media_url}'>{name}</a></p>\n".format(
+            html += "<p>{description}: <a href='{media_url}' download='{name}'>{name}</a></p>\n".format(
             **artifact)
     html += "</body>\n</html>"
     return html
